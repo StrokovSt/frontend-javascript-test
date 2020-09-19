@@ -12,11 +12,10 @@ export default function TableComponent(props) {
   });
 
   const thHandler = (key) => {
-    const status = thStatus.[key];
-    const newStatus = Object.assign({}, thStatus);
-    newStatus.[key] = !status;
-    setThStatus(newStatus);
-    props.onThHandler(thStatus.[key], key);
+    setThStatus(Object.assign({}, thStatus, {
+      [key]: !thStatus[key]
+    }));
+    props.onThHandler(thStatus[key], key);
   }
 
   return (
@@ -30,8 +29,8 @@ export default function TableComponent(props) {
           <th className="page-main__th" onClick={() => thHandler('phone')}>телефон</th>
         </tr>
 
-        {props.users.map(user => {
-          return <TableRowComponent user={user} key={user.id}/>
+        {props.users.map((user, index) => {
+          return <TableRowComponent user={user} key={index}/>
         })}
 
       </tbody>

@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NewRowComponent from '../components/newRow';
 import TableComponent from '../components/table';
+import LoadingComponent from '../components/loading';
 
 export const MainPage = () => {
-  let [users, setUsers] = useState([
-    {id: 4, firstName: "Вася", lastName: "Голованов", email: "vasska@golovach.com", phone: 123 },
-    {id: 2, firstName: "Даня", lastName: "Данилович", email: "donich@golovach.com", phone: 333 },
-    {id: 3, firstName: "Вова", lastName: "Вавилович", email: "vovka@golovach.com", phone: 222 },
-    {id: 1, firstName: "Наташа", lastName: "Батьковна", email: "nata@golovach.com", phone: 8913 }
-  ])
+  let [users, setUsers] = useState([]);
+
+  useEffect( () => {
+    fetch('http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}')
+      .then(response => response.json())
+      .then(users => {
+        setUsers(users);
+        console.log(users);
+      })
+  }, []);
+
+  const addNewUser = (newUser) => {
+    setUsers(users.concat(newUser))
+  };  
 
   const usersSort = (direction, key) => {
     setUsers(
@@ -22,13 +31,17 @@ export const MainPage = () => {
         return 0;
       }))
     )
-  }
+  };
   
   return (
     <div className="page-main container">
       <h1>Main page</h1>
-      <NewRowComponent />
-      <TableComponent users={users} onThHandler={usersSort}/>
+      <NewRowComponent addNewUser={addNewUser}/>
+      {users.length ? (
+        <TableComponent users={users} onThHandler={usersSort}/>
+      ) : (
+        <LoadingComponent />
+      )}
     </div>
   )
 }
