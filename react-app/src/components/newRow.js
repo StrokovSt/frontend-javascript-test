@@ -14,11 +14,11 @@ export default function NewRowComponent({addNewUser}) {
   const formClasses = ['page-main__form'];
   if (formStatus) {
     formClasses.push('page-main__form--show');
-  }
+  };
 
   const buttonClickHandler = () => {
     setFormStatus(!formStatus);
-  }
+  };
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
@@ -30,20 +30,19 @@ export default function NewRowComponent({addNewUser}) {
       email: '',
       phone: ''
     }));
-  }
+    setSubmitStatus(true);
+  };
 
   const submitStatusCheck = () => {
-    if (!!newUser.id && !!newUser.firstName && !!newUser.lastName && !!newUser.email && !!newUser.phone) {
+    if (newUser.id && newUser.firstName && newUser.lastName && newUser.email && newUser.phone) {
       setSubmitStatus(false);
-    } else {
-      setSubmitStatus(true);
     }
   };
 
   return (
     <div className="page-main__adds-container">
       <button className="page-main__add-button" onClick={buttonClickHandler}>{formStatus ? `Закрыть форму` : `Открыть форму`}</button>
-      <form className={formClasses.join(' ')} onSubmit={formSubmitHandler} onChange={submitStatusCheck}>
+      <form className={formClasses.join(' ')} onSubmit={formSubmitHandler} onBlur={submitStatusCheck}>
         <fieldset className="page-main__fieldset">
           <ul className="page-main__list">
               <li className="page-main__item">
@@ -52,7 +51,7 @@ export default function NewRowComponent({addNewUser}) {
                 onChange={ev => setNewUser(Object.assign({}, newUser, {
                   id: Number(ev.target.value)
                 }))} 
-                className="page-main__input" type="text" name="user-id" id="user-id" required />
+                className="page-main__input" type="number" name="user-id" id="user-id" required />
               </li>
               <li className = "page-main__item">
                 <label htmlFor = "user-first-name">firstName</label>
@@ -88,7 +87,7 @@ export default function NewRowComponent({addNewUser}) {
               </li>
             </ul>
         </fieldset>
-        <button className ="popup-call__button" type="submit" disabled={submitStatus}>Добавить пользователя</button>
+        <button className ="page-main__submit-button" type="submit" disabled={submitStatus}>Добавить пользователя</button>
       </form>
     </div>
   )
