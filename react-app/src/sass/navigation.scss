@@ -1,0 +1,16 @@
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 1rem;
+  padding-bottom: 0;
+
+  list-style: none;
+  background-color: #bbdefb;
+}
+
+.navigation > li{
+  display: block;
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+}

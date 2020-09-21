@@ -8,7 +8,8 @@ export default function NewRowComponent({addNewUser}) {
     firstName: '',
     lastName: '',
     email: '',
-    phone: ''
+    phone: '',
+		description: 'описание отсутствует',
   })
 
   const formClasses = ['page-main__form'];

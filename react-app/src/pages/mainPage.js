@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import NewRowComponent from '../components/newRow';
 import TableComponent from '../components/table';
 import SearchFormComponent from '../components/search';
@@ -7,12 +7,13 @@ export const MainPage = (props) => {
   let [users, setUsers] = useState(props.users);
 
   const addNewUser = (newUser) => {
-    setUsers([].concat(newUser).concat(users))
+    props.setUsers(newUser);
+    setUsers([].concat(newUser).concat(props.users));
   };  
 
   const usersSort = (direction, key) => {
     setUsers(
-      [].concat(users = users.sort(function(a, b) {
+      [].concat(users.sort(function(a, b) {
         if (a[key] > b[key]) {
           return direction ? 1 : -1;
         }
@@ -39,7 +40,7 @@ export const MainPage = (props) => {
         props.users.filter(user => {
         let valuesIsExist = false;
           getUserValues(user).forEach(value => {
-            if (String(value).includes(searchValue)) {
+            if (String(value).toUpperCase().includes(searchValue.toUpperCase())) {
               console.log(`Найдено совпадение в`, value);
               valuesIsExist = true;
             }
@@ -53,15 +54,19 @@ export const MainPage = (props) => {
   };
 
   return (
-    <div className="page-main container">
-      <h1>Main page</h1>
+    <div className="page-main">
+      <h1>Сортировка контактов</h1>
+      <p>{props.pageNumber === 0 ? "Главная страница" : ("Страница №" + props.pageNumber)}</p>
       <NewRowComponent addNewUser={addNewUser} />
-      {!!users ? (
+      {users.length > 0 ? (
         <div>
           <SearchFormComponent usersFilter={usersFilter} />
           <TableComponent users={users} onThHandler={usersSort}/>
         </div>
-      ) : ( <p>Нам нечего тут отобразить</p>
+      ) : ( <div>
+          <SearchFormComponent usersFilter={usersFilter} />
+          <TableComponent users={users} onThHandler={usersSort}/>
+        </div>
       )}
     </div>
   )
